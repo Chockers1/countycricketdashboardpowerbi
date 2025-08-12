@@ -1,11 +1,12 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# --- Power BI Embed Code ---
-# Using fixed pixel height for iframe, adjust as needed
-PBI_IFRAME = """
-<iframe title="CC_Database_Prod_v6.14" width="100%" height="700" src="https://app.powerbi.com/view?r=eyJrIjoiYWZmYmI2MDUtNzQxMC00ZDBjLTgwYWEtOGQ4NGQ5MjNkMTg4IiwidCI6IjU5YTIyMTkwLTMzZDQtNGM1NC1iM2VlLTc4ZGMzMDhlNzY3YiJ9" frameborder="0" allowFullScreen="true"></iframe>
-"""
+# --- Power BI Embed URL ---
+# Using a taller default height can prevent Power BI from over-shrinking the view.
+PBI_URL = (
+    "https://app.powerbi.com/view?r=eyJrIjoiYWZmYmI2MDUtNzQxMC00ZDBjLTgwYWEtOGQ4NGQ5MjNkMTg4IiwidCI6IjU5YTIyMTkwLTMzZDQtNGM1NC1iM2VlLTc4ZGMzMDhlNzY3YiJ9"
+    "&filterPaneEnabled=false&navContentPaneEnabled=false"
+)
 
 def dashboard_page():
     """Displays the member dashboard with the Power BI report."""
@@ -15,6 +16,15 @@ def dashboard_page():
         st.stop() # Stop execution if not logged in
 
     # --- Header Section ---
+    # Expand usable width a bit more than Streamlit's default "wide" layout
+    st.markdown(
+        """
+        <style>
+        .main .block-container {max-width: 95vw;}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     # Use markdown for centered title
     st.markdown("<h1 style='text-align: center;'>📊 Member Dashboard</h1>", unsafe_allow_html=True)
 
@@ -29,8 +39,9 @@ def dashboard_page():
     st.markdown("<h2 style='text-align: center;'>County Championship Ultimate Database</h2>", unsafe_allow_html=True)
 
     # Embed the Power BI report
-    # Set component height slightly larger than iframe height for padding/scrolling
-    components.html(PBI_IFRAME, height=720, scrolling=True)
+    # Let users tweak height if the report appears tiny due to "fit to page" scaling.
+    default_height = st.session_state.get("pbi_iframe_height", 1100)
+    components.iframe(PBI_URL, height=default_height, scrolling=True)
 
     st.divider() # Add a divider before the buttons
 
@@ -70,6 +81,15 @@ def dashboard_page():
             st.rerun() # Rerun the app to go back to the login/home page
 
         st.divider()
+        # Optional display-size controls for the embedded report
+        with st.expander("Display size", expanded=False):
+            new_height = st.slider(
+                "Report height (px)", min_value=700, max_value=2000, value=int(default_height), step=50
+            )
+            if new_height != default_height:
+                st.session_state["pbi_iframe_height"] = int(new_height)
+                st.rerun()
+
         # Removed the generic st.info("Need help? Contact support or check the FAQ.")
 
 # Example of running this page directly (optional, for testing)
