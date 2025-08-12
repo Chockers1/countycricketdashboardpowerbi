@@ -45,7 +45,7 @@ def dashboard_page():
             if st.button("🐞 Report a Bug", key="footer_bug_report", use_container_width=True):
                 st.session_state.page = 'bug_report' # Set state to navigate
                 st.rerun()
-
+ 
         with col_btn2:
             # Contact Support Button (using mailto link)
             if "email_recipient" in st.secrets:
