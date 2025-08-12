@@ -4,8 +4,7 @@ import streamlit.components.v1 as components
 # --- Power BI Embed URL ---
 # Using a taller default height can prevent Power BI from over-shrinking the view.
 PBI_URL = (
-    "https://app.powerbi.com/view?r=eyJrIjoiYWZmYmI2MDUtNzQxMC00ZDBjLTgwYWEtOGQ4NGQ5MjNkMTg4IiwidCI6IjU5YTIyMTkwLTMzZDQtNGM1NC1iM2VlLTc4ZGMzMDhlNzY3YiJ9"
-    "&filterPaneEnabled=false&navContentPaneEnabled=false"
+    "https://app.powerbi.com/view?r=eyJrIjoiYWM0YmNiZDMtZjMxOC00MWMyLTg4NjAtOTQ0NGE5Y2Q1NmJhIiwidCI6IjU5YTIyMTkwLTMzZDQtNGM1NC1iM2VlLTc4ZGMzMDhlNzY3YiJ9&pageName=ReportSection06cd1cda4509ede10730"
 )
 
 def dashboard_page():
